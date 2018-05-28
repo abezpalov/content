@@ -1,7 +1,14 @@
 {% extends "main.html" %}
 
-{% block title %}{{ article.title }}{% endblock %}
+{# Заголовок #}
+{% block title %}{% if site_name %}{{ site_name }}: {% endif %}{{ article.title }}{% endblock %}
 
+{# Контент #}
 {% block content %}
+<div class="row">
+<h2 class="ui header">{{ article.title }}</h2>
+{% autoescape off %}
 {{ article.content }}
+{% endautoescape %}
+</div>
 {% endblock %}
