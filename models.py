@@ -11,30 +11,35 @@ class Article(models.Model):
 
     title = models.CharField(max_length=512, db_index=True)
     alias = models.CharField(max_length=512, unique=True)
-    intro = models.TextField(null=True, default='')
-    content = models.TextField(null=True, default='')
+    intro = models.TextField(null=True, blank=True, default='')
+    content = models.TextField(null=True, blank=True, default='')
+    description = models.TextField(null=True, blank=True, default='')
 
-    img_url = models.URLField(null=True, default='')
-    img_path = models.ImageField(null=True, default='')
+    img_url = models.URLField(null=True, blank=True, default='')
+    img_path = models.ImageField(null=True, blank=True, upload_to='article/imgs', default='')
 
     state = models.BooleanField(default=False, db_index=True)
 
     created = models.DateTimeField(auto_now_add=True, db_index=True)
-    created_at = models.ForeignKey(settings.AUTH_USER_MODEL,
+    created_at = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, default=None,
                                    on_delete=models.SET(get_sentinel_user),
                                    related_name='+')
 
-    edited = models.DateTimeField(auto_now_add=True, db_index=True)
-    edited_at = models.ForeignKey(settings.AUTH_USER_MODEL,
+    edited = models.DateTimeField(auto_now=True, db_index=True)
+    edited_at = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, default=None,
                                   on_delete=models.SET(get_sentinel_user),
                                   related_name='+')
 
     published = models.DateTimeField(null=True, db_index=True)
-    published_at = models.ForeignKey(settings.AUTH_USER_MODEL,
+    published_at = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, default=None,
                                      on_delete=models.SET(get_sentinel_user),
                                      related_name='+')
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         ordering = ['-created']
-
-
+        verbose_name = 'article'
+        verbose_name_plural = 'articles'
+        permissions = (('can_publish_articles', 'Can publish articles'),)
