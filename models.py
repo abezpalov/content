@@ -18,22 +18,13 @@ class Article(models.Model):
     img_url = models.URLField(null=True, blank=True, default='')
     img_path = models.ImageField(null=True, blank=True, upload_to='article/imgs', default='')
 
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, default=None,
+                               on_delete=models.SET(get_sentinel_user), related_name='+')
+
     state = models.BooleanField(default=False, db_index=True)
 
     created = models.DateTimeField(auto_now_add=True, db_index=True)
-    created_at = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, default=None,
-                                   on_delete=models.SET(get_sentinel_user),
-                                   related_name='+')
-
     edited = models.DateTimeField(auto_now=True, db_index=True)
-    edited_at = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, default=None,
-                                  on_delete=models.SET(get_sentinel_user),
-                                  related_name='+')
-
-    published = models.DateTimeField(null=True, db_index=True)
-    published_at = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, default=None,
-                                     on_delete=models.SET(get_sentinel_user),
-                                     related_name='+')
 
     def __str__(self):
         return self.title

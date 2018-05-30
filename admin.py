@@ -7,8 +7,7 @@ class ArticleAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,    {'fields': ['title', 'alias', 'content']}),
         ('Preview', {'fields': ['intro', 'img_path']}),
-        ('Publish', {'fields': ['state', 'description']}),
-        ('Hystory', {'fields': ['created_at', 'edited_at', 'published_at']}),
+        ('Publish', {'fields': ['author', 'state', 'description']}),
     ]
 
 admin.site.register(Article, ArticleAdmin)
